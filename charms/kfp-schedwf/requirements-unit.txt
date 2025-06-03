@@ -27,7 +27,7 @@ exceptiongroup==1.1.2
     # via
     #   anyio
     #   pytest
-h11==0.14.0
+h11==0.16.0
     # via httpcore
 httpcore==0.17.3
     # via httpx
