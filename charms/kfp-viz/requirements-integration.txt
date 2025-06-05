@@ -48,7 +48,7 @@ executing==2.0.1
     # via stack-data
 google-auth==2.30.0
     # via kubernetes
-h11==0.14.0
+h11==0.16.0
     # via httpcore
 httpcore==1.0.5
     # via httpx
