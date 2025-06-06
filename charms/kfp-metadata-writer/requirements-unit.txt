@@ -41,7 +41,7 @@ exceptiongroup==1.1.3
     #   -r requirements.txt
     #   anyio
     #   pytest
-h11==0.14.0
+h11==0.16.0
     # via
     #   -r requirements.txt
     #   httpcore
