@@ -173,7 +173,7 @@ pyyaml==6.0.1
     #   ops
     #   pytest-operator
     #   serialized-data-interface
-requests==2.32.3
+requests==2.32.4
     # via
     #   hvac
     #   kubernetes
