@@ -89,7 +89,7 @@ tenacity==8.2.2
     #   charmed-kubeflow-chisme
 typing-extensions==4.11.0
     # via cosl
-urllib3==2.0.4
+urllib3==2.5.0
     # via requests
 websocket-client==1.6.1
     # via ops
