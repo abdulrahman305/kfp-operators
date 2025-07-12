@@ -116,7 +116,7 @@ tenacity==8.2.2
     # via charmed-kubeflow-chisme
 typing-extensions==4.12.2
     # via cosl
-urllib3==2.0.4
+urllib3==2.5.0
     # via
     #   kubernetes
     #   requests
