@@ -87,7 +87,7 @@ pyyaml==6.0.1
     #   lightkube
     #   ops
     #   serialized-data-interface
-requests==2.31.0
+requests==2.32.4
     # via serialized-data-interface
 ruamel-yaml==0.17.32
     # via charmed-kubeflow-chisme
@@ -108,7 +108,7 @@ tomli==2.0.1
     # via pytest
 typing-extensions==4.12.2
     # via cosl
-urllib3==2.0.4
+urllib3==2.5.0
     # via requests
 websocket-client==1.6.1
     # via ops
