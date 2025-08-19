@@ -18,14 +18,14 @@ def get_charm_name(metadata_file: Union[Path, str]) -> str:
 def get_charm_file(charm_dir: Path) -> Path:
     """Returns the path to the .charm file representing the charm in the given directory
 
-    TODO: This just assumes the suffix on the file name will be "ubuntu-20.04-amd64".
+    TODO: This just assumes the suffix on the file name will be "ubuntu@24.04-amd64".
           Fix this in future
     """
     charm_dir = Path(charm_dir)
     metadata_file = charm_dir / "metadata.yaml"
     charm_name = get_charm_name(metadata_file)
 
-    return (charm_dir / f"{charm_name}_ubuntu-20.04-amd64.charm").absolute()
+    return (charm_dir / f"{charm_name}_ubuntu@24.04-amd64.charm").absolute()
 
 
 def get_resources_from_charm_dir(charm_dir: Path) -> Dict[str, str]:
@@ -45,6 +45,11 @@ def get_resources_from_charm_file(charm_file: str) -> Dict[str, str]:
         return {k: v["upstream-source"] for k, v in resources.items()}
     open_charm_file = charm_file
 
+def update_charm_context(context, charm_name, charm_path):
+    """Updates the context dict with the charm resources and charm artifact path"""
+    charm_resources = get_resources_from_charm_file(charm_path)
+    context.update([(f"{charm_name.replace('-', '_')}_resources", charm_resources)])
+    context.update([(f"{charm_name.replace('-', '_')}", charm_path)])
 
 def localize_bundle_application(
     bundle: dict,
