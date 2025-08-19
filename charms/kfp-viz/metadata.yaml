@@ -11,7 +11,8 @@ resources:
   oci-image:
     type: oci-image
     description: OCI image for ml-pipeline-visualizationserver
-    upstream-source: charmedkubeflow/visualization-server:2.3.0-a2f7f9e
+    # The container's `user` needs to be updated when switching from upstream image to rock
+    upstream-source: docker.io/charmedkubeflow/visualization-server:2.5.0-400719c
 provides:
   kfp-viz:
     interface: k8s-service
