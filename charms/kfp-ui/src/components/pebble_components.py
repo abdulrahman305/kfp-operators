@@ -40,11 +40,12 @@ class MlPipelineUiPebbleService(PebbleServiceComponent):
                     self.service_name: {
                         "override": "replace",
                         "summary": "entry point for ml-pipeline-ui",
-                        # command should be updated each time we switch from upstream to ROCK image
+                        # command should be updated each time we switch from upstream image to rock
                         #  - upsstream: "command": "node dist/server.js ../client/ 3000"
                         #  - rock: "command": "node /server/dist/server.js /client/ 3000"
-                        "command": "node /server/dist/server.js /client/ 3000",  # Must be a string
+                        "command": "node /server/dist/server.js /client/ 3000",
                         "startup": "enabled",
+                        "user": "_daemon_",  # This is needed only for rocks
                         # TODO: are these still the correct settings?
                         "environment": {
                             "ALLOW_CUSTOM_VISUALIZATIONS": str(
