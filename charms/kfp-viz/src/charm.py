@@ -17,8 +17,8 @@ from charmed_kubeflow_chisme.components import (
 from charms.loki_k8s.v1.loki_push_api import LogForwarder
 from charms.observability_libs.v1.kubernetes_service_patch import KubernetesServicePatch
 from lightkube.models.core_v1 import ServicePort
+from ops import main
 from ops.charm import CharmBase
-from ops.main import main
 
 from components.pebble_components import KfpVizPebbleService
 
@@ -64,7 +64,7 @@ class KfpVizOperator(CharmBase):
         )
 
         # The service_name should be consistent with the rock predefined
-        # service name to be able to re-use it, do not change it unless
+        # service name to be able to reuse it, do not change it unless
         # it changes in the corresponding Rockcraft project.
         self.ml_pipeline_visualizationserver_container = self.charm_reconciler.add(
             component=KfpVizPebbleService(
