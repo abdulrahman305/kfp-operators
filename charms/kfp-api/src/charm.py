@@ -17,6 +17,7 @@ from charmed_kubeflow_chisme.kubernetes import (
 )
 from charmed_kubeflow_chisme.pebble import update_layer
 from charms.data_platform_libs.v0.data_interfaces import DatabaseRequires
+from charms.grafana_k8s.v0.grafana_dashboard import GrafanaDashboardProvider
 from charms.loki_k8s.v1.loki_push_api import LogForwarder
 from charms.observability_libs.v1.kubernetes_service_patch import KubernetesServicePatch
 from charms.prometheus_k8s.v0.prometheus_scrape import MetricsEndpointProvider
@@ -26,8 +27,8 @@ from lightkube.generic_resource import load_in_cluster_generic_resources
 from lightkube.models.core_v1 import ServicePort
 from lightkube.resources.core_v1 import Service, ServiceAccount
 from lightkube.resources.rbac_authorization_v1 import ClusterRole, ClusterRoleBinding
+from ops import main
 from ops.charm import CharmBase
-from ops.main import main
 from ops.model import ActiveStatus, BlockedStatus, MaintenanceStatus, ModelError, WaitingStatus
 from ops.pebble import CheckStatus, Layer
 from serialized_data_interface import (
@@ -140,6 +141,9 @@ class KfpApiOperator(CharmBase):
                 }
             ],
         )
+
+        self.dashboard_provider = GrafanaDashboardProvider(self)
+
         self._logging = LogForwarder(charm=self)
 
     @property
@@ -215,6 +219,7 @@ class KfpApiOperator(CharmBase):
                     "command": f"bash -c '{self._exec_command}'",
                     "startup": "enabled",
                     "environment": self.service_environment,
+                    "user": "_daemon_",  # This is needed only for rocks
                     "on-check-failure": {"kfp-api-up": "restart"},
                 }
             },
@@ -279,7 +284,11 @@ class KfpApiOperator(CharmBase):
             "LOG_LEVEL": self.model.config["log-level"],
             "ML_PIPELINE_VISUALIZATIONSERVER_SERVICE_HOST": viz_data["service-name"],
             "ML_PIPELINE_VISUALIZATIONSERVER_SERVICE_PORT": viz_data["service-port"],
+            "PIPELINE_LOG_LEVEL": "1",
+            "PUBLISH_LOGS": "true",
             "CACHE_IMAGE": self.model.config["cache-image"],
+            "V2_DRIVER_IMAGE": self.model.config["driver-image"],
+            "V2_LAUNCHER_IMAGE": self.model.config["launcher-image"],
             # Configurations charmed-kubeflow adds to those of upstream
             "ARCHIVE_CONFIG_LOG_FILE_NAME": self.model.config["log-archive-filename"],
             "ARCHIVE_CONFIG_LOG_PATH_PREFIX": self.model.config["log-archive-prefix"],
@@ -294,8 +303,6 @@ class KfpApiOperator(CharmBase):
             "OBJECTSTORECONFIG_HOST": f"{object_storage['service']}.{object_storage['namespace']}",
             "OBJECTSTORECONFIG_PORT": str(object_storage["port"]),
             "OBJECTSTORECONFIG_REGION": "",
-            "V2_LAUNCHER_IMAGE": self.model.config["launcher-image"],
-            "V2_DRIVER_IMAGE": self.model.config["driver-image"],
         }
 
         return env_vars
