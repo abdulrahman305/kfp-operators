@@ -29,8 +29,8 @@ from charms.observability_libs.v1.kubernetes_service_patch import KubernetesServ
 from lightkube.generic_resource import create_global_resource
 from lightkube.models.core_v1 import ServicePort
 from lightkube.resources.core_v1 import Secret
+from ops import main
 from ops.charm import CharmBase
-from ops.main import main
 from ops.model import BlockedStatus
 
 from components.pebble_components import (
@@ -54,7 +54,7 @@ K8S_RESOURCE_FILES = [
     "src/templates/secrets.yaml.j2",
 ]
 KFP_DEFAULT_PIPELINE_ROOT = ""
-KFP_IMAGES_VERSION = "2.0.3"  # Remember to change this version also in default-custom-images.json
+KFP_IMAGES_VERSION = "2.5.0"  # Remember to change this version also in default-custom-images.json
 # This service name must be the Service from the mlmd-operator
 # FIXME: leaving it hardcoded now, but we should share this
 # host and port through relation data
